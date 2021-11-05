@@ -81,19 +81,20 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
       }
     }
     template: {
+
       containers: [
         {
           name: 'chain-csharp'
-          image: 'ghcr.io/jimpaine/chain-csharp:0.1.20'
+          image: 'ghcr.io/jimpaine/chain-csharp:0.1.21'
           env: [
             {
               name: 'nextHop'
               secretref: 'nexthop'
             }
-            // {
-            //   name: 'nextHop'
-            //   value: 'https://${go.properties.configuration.ingress.fqdn}/api/go'
-            // }
+            {
+              name: 'version'
+              value: '0.1.21'
+            }
           ]
           resources: {
             cpu: '.25'
@@ -123,15 +124,23 @@ resource go 'Microsoft.Web/containerapps@2021-03-01' = {
       containers: [
         {
           name: 'chain-go'
-          image: 'ghcr.io/jimpaine/chain-go:0.1.6'
+          image: 'ghcr.io/jimpaine/chain-go:0.1.7'
           resources: {
             cpu: '.25'
             memory: '.5Gi'
           }
+          env: [
+            {
+              name: 'VERSION'
+              value: '0.1.7'
+            }
+          ]
         }
       ]
     }
   }
 }
+
+
 
 output entry string = csharp.properties.configuration.ingress.fqdn
