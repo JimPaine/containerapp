@@ -8,22 +8,21 @@ on:
   pull_request:
     branches: main
 
-  jobs:
-    deploy:
-    runs-on: ubuntu-latest
-    env:
-      LOCATION: northeurope
-
-    steps:
-    - uses: actions/checkout@v2
-    - run: |
-        az login --service-principal \
-        -u ${{ secrets.AZ_CLI_APP_ID }} \
-        -p ${{ secrets.AZ_CLI_PASSWORD }} \
-        --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
-    - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
-    - run: |
-        az deployment sub create \
-        -n 'containerapp${{ github.RUN_NUMBER }}' \
-        -l ${{ env.LOCATION }} \
-        -f ./env/main.bicep
+jobs:
+  deploy:
+  runs-on: ubuntu-latest
+  env:
+    LOCATION: northeurope
+  steps:
+  - uses: actions/checkout@v2
+  - run: |
+      az login --service-principal \
+      -u ${{ secrets.AZ_CLI_APP_ID }} \
+      -p ${{ secrets.AZ_CLI_PASSWORD }} \
+      --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
+  - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
+  - run: |
+      az deployment sub create \
+      -n 'containerapp${{ github.RUN_NUMBER }}' \
+      -l ${{ env.LOCATION }} \
+      -f ./env/main.bicep
