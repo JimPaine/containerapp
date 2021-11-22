@@ -6,7 +6,7 @@ ENV ASPNETCORE_URLS=http://+:80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS publish
 WORKDIR /src
-COPY *.csproj" ./
+COPY *.csproj ./
 RUN dotnet restore
 RUN dotnet publish -c Release -o /app/publish
 
