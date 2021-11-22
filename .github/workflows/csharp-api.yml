@@ -38,8 +38,8 @@ jobs:
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
       - run: |
-          az deployment sub create \
-          -n 'containerapp${{ github.RUN_NUMBER }}' \
-          -l ${{ env.LOCATION }} \
+          az deployment group create \
+          -n 'csharp-api${{ github.RUN_NUMBER }}' \
+          -g  rg-containerapps-qrcpbr3qfrcik \
           -f ./apps/csharp-api/main.bicep \
           -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }}
