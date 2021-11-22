@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS publish
 WORKDIR /src
 COPY *.csproj ./
 RUN dotnet restore
+COPY Program.cs ./
 RUN dotnet publish -c Release -o /app/publish
 
 FROM base AS final
