@@ -14,4 +14,4 @@ RUN dotnet publish -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-CMD ["dotnet", "Chain.dll"]
+CMD ["dotnet", "csharp-api.dll"]
