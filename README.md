@@ -16,6 +16,7 @@
 - C# update env variables via app workflow
 
 ## TODO
+- clean up Bicep
 - queue example
 - akv for secrets ?
 - blue green
@@ -31,6 +32,8 @@
     - app repo then handles rotation of revisions
     - revision strategy set in iac repo
 - Trigger app workflow to deploy latest from IaC deploy
+- switch apps to no or placeholder containers
+
 # Missing
 - MSI
 - private endpoints

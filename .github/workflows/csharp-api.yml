@@ -1,0 +1,15 @@
+name: csharp-api
+
+on:
+  push:
+    paths:
+     - apps/csharp-api/*
+     - .github/workflows/csharp-api.yml
+  pull_request:
+    branches: main
+
+  jobs:
+    validation:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v2
