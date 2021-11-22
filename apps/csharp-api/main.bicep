@@ -5,8 +5,6 @@ param environmentName string
 
 param image string
 
-param trafficSplitting array = []
-
 resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
   name: environmentName
 }
@@ -22,7 +20,6 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
       ingress: {
         external: true
         targetPort: 80
-        traffic: trafficSplitting
       }
     }
 
