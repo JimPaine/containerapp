@@ -40,6 +40,6 @@ jobs:
       - run: |
           az deployment group create \
           -n 'csharp-api${{ github.RUN_NUMBER }}' \
-          -g  rg-containerapps-qrcpbr3qfrcik \
+          -g  rg-containerapps-3wl63cg4lbi4o \
           -f ./apps/csharp-api/main.bicep \
           -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }}
