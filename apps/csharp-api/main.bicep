@@ -24,7 +24,7 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
       secrets: [
         {
           name: 'nexthop'
-          value: 'https://${go.properties.configuration.ingress.fqdn}/api/go'
+          value: 'https://${nextHop.properties.configuration.ingress.fqdn}/api/go'
         }
       ]
       ingress: {
