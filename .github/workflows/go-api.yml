@@ -26,7 +26,7 @@ jobs:
         with:
           context: ./apps/go-api
           push: true
-          tags: ghcr.io/jimpaine/containerapp:go-api:0.1.${{ github.RUN_NUMBER }}
+          tags: ghcr.io/jimpaine/containerapp:go-api-0.1.${{ github.RUN_NUMBER }}
 
   deploy-app:
     environment:
