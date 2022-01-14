@@ -1,0 +1,55 @@
+name: go-api
+
+on:
+  push:
+    branches: main
+    paths:
+     - apps/go-api/*
+     - .github/workflows/go-api.yml
+  pull_request:
+    branches: main
+
+jobs:
+  push-to-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker login
+        uses: docker/login-action@v1.10.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: ./apps/go-api
+          push: true
+          tags: ghcr.io/jimpaine/containerapp:go-api:0.1.${{ github.RUN_NUMBER }}
+
+  deploy-app:
+    environment:
+      name: dev
+      url: ${{ steps.get-url.outputs.fqdn }}
+    runs-on: ubuntu-latest
+    needs: push-to-packages
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          az login --service-principal \
+          -u ${{ secrets.AZ_CLI_APP_ID }} \
+          -p ${{ secrets.AZ_CLI_PASSWORD }} \
+          --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
+      - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
+      - run: az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
+      - run: az provider register --namespace Microsoft.Web
+      - run: |
+          az deployment group create \
+          -n 'go-api${{ github.RUN_NUMBER }}' \
+          -g  rg-containerapps-3wl63cg4lbi4o \
+          -f ./apps/go-api/main.bicep \
+          -p environmentName=environment image=ghcr.io/jimpaine/containerapp:go-api-0.1.${{ github.RUN_NUMBER }}
+      - name: get-url
+        id: get-url
+        run: echo "::set-output name=fqdn::https://$(az containerapp show -n go -g rg-containerapps-3wl63cg4lbi4o --query configuration.ingress.fqdn -o tsv)"
