@@ -31,8 +31,6 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
       ]
       ingress: {
         external: true
-        targetPort: 443
-        allowInsecure: false
         traffic: [
           {
             latestRevision: true
