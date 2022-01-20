@@ -47,7 +47,7 @@ jobs:
           -n 'csharp-api${{ github.RUN_NUMBER }}' \
           -g  ${{ secrets.RESOURCE_GROUP }} \
           -f ./apps/csharp-api/main.bicep \
-          -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }}
+          -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }} version=0.1.${{ github.RUN_NUMBER }}
       - name: get-url
         id: get-url
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp -g ${{ secrets.RESOURCE_GROUP }} --query configuration.ingress.fqdn -o tsv)"

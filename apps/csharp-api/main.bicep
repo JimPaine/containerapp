@@ -5,6 +5,8 @@ param environmentName string
 
 param image string
 
+param version string
+
 resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
   name: environmentName
 }
@@ -29,6 +31,7 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
       ]
       ingress: {
         external: true
+        revisionName: version
         targetPort: 80
       }
     }
