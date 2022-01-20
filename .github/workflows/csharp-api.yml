@@ -45,9 +45,9 @@ jobs:
       - run: |
           az deployment group create \
           -n 'csharp-api${{ github.RUN_NUMBER }}' \
-          -g  rg-containerapps-3wl63cg4lbi4o \
+          -g  ${{ secrets.RESOURCE_GROUP }} \
           -f ./apps/csharp-api/main.bicep \
           -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }}
       - name: get-url
         id: get-url
-        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp -g rg-containerapps-3wl63cg4lbi4o --query configuration.ingress.fqdn -o tsv)"
+        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp -g ${{ secrets.RESOURCE_GROUP }} --query configuration.ingress.fqdn -o tsv)"
