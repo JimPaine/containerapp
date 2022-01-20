@@ -10,20 +10,20 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-03-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
+        '10.0.0.0/8'
       ]
     }
     subnets: [
       {
         name: 'control'
         properties: {
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: '10.0.0.0/16'
         }
       }
       {
         name: 'app'
         properties: {
-          addressPrefix: '10.0.1.0/24'
+          addressPrefix: '10.1.0.0/16'
         }
       }
     ]
@@ -51,8 +51,6 @@ resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' = {
     // internalLoadBalancerEnabled: true
     // containerAppsConfiguration: {
     //   controlPlaneSubnetResourceId: vnet.properties.subnets[0].id
-    //   platformReservedCidr: '10.1.254.0/24'
-    //   platformReservedDnsIP: '10.1.254.253'
     //   appSubnetResourceId: vnet.properties.subnets[1].id
     // }
     appLogsConfiguration: {
