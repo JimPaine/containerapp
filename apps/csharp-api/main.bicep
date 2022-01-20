@@ -31,7 +31,14 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
       ]
       ingress: {
         external: true
-        targetPort: 80
+        targetPort: 443
+        allowInsecure: false
+        traffic: [
+          {
+            latestRevision: true
+            weight: 100
+          }
+        ]
       }
     }
 
@@ -44,6 +51,10 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
             {
               name: 'nextHop'
               secretref: 'nexthop'
+            }
+            {
+              name: 'version'
+              value: version
             }
           ]
           resources: {
