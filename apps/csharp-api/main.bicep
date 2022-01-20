@@ -32,12 +32,6 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
       ingress: {
         external: true
         targetPort: 80
-        traffic: [
-          {
-            latestRevision: true
-            weight: 100
-          }
-        ]
       }
     }
 
@@ -62,7 +56,6 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
           }
         }
       ]
-      revisionSuffix: version
     }
   }
 }
