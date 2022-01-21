@@ -16,7 +16,7 @@ resource nextHop 'Microsoft.Web/containerapps@2021-03-01' existing = {
 }
 
 resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
-  name: 'csharp'
+  name: 'csharp-api'
   location: resourceGroup().location
 
   properties: {
