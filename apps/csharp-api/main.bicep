@@ -56,7 +56,6 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
           }
         }
       ]
-      revisionSuffix: 'abcdef'
     }
   }
 }
