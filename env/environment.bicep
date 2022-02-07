@@ -10,20 +10,20 @@ resource vnet 'Microsoft.Network/virtualNetworks@2021-03-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/8'
+        '10.0.0.0/16'
       ]
     }
     subnets: [
       {
-        name: 'control'
+        name: 'controlplane'
         properties: {
-          addressPrefix: '10.0.0.0/16'
+          addressPrefix: '10.0.8.0/21'
         }
       }
       {
         name: 'app'
         properties: {
-          addressPrefix: '10.1.0.0/16'
+          addressPrefix: '10.0.16.0/21'
         }
       }
     ]
@@ -48,16 +48,17 @@ resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' = {
 
   properties: {
     type: 'managed'
-    // internalLoadBalancerEnabled: true
-    // containerAppsConfiguration: {
-    //   controlPlaneSubnetResourceId: vnet.properties.subnets[0].id
-    //   appSubnetResourceId: vnet.properties.subnets[1].id
-    // }
+    internalLoadBalancerEnabled: false
+    containerAppsConfiguration: {
+      controlPlaneSubnetResourceId: vnet.properties.subnets[0].id
+      appSubnetResourceId: vnet.properties.subnets[1].id
+      internalOnly: true
+    }
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
         customerId: logs.properties.customerId
-        sharedKey: listKeys('${logs.type}/${logs.name}', logs.apiVersion).primarySharedKey
+        sharedKey: logs.listKeys().primarySharedKey
       }
     }
   }

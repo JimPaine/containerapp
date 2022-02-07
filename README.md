@@ -27,3 +27,9 @@
 - private endpoints
 - vnet integration
 - view of current instance
+
+# Broken / Suspect
+
+can't deploy an app named 'csharp' all of a sudden have tried delete everything including the environment, rolled back recent changes still nothing. change the name to csharp-api and boom it works.
+
+revisionSuffix after trying to set to semantic version number the app has stopped deploying, says it has deployed but no new revision turned up. deployment step shows all items as null. Removed the revision suffix and still broken. Change to basic string no numbers or specials and it works again.
