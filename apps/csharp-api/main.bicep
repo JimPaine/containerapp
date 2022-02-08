@@ -11,6 +11,8 @@ param previous_version string
 param previous_split int = 100
 param latest_split int = 0
 
+var revisionSuffix = replace(version, '.', '-')
+
 resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
   name: environmentName
 }
@@ -38,19 +40,19 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
         targetPort: 80
         traffic: [
           {
-              revisionName: previous_version
-              weight: previous_split
+            revisionName: previous_version
+            weight: previous_split
           }
           {
-              latestRevision: true
-              weight: latest_split
+            revisionName: 'csharp-api--${revisionSuffix}'
+            weight: latest_split
           }
       ]
       }
     }
 
     template: {
-      revisionSuffix: replace(version, '.', '-')
+      revisionSuffix: revisionSuffix
       containers: [
         {
           name: 'csharp-api'
