@@ -34,6 +34,20 @@ resource go 'Microsoft.Web/containerapps@2021-03-01' = {
           }
         }
       ]
+      scale: {
+        minReplicas: 0
+        maxReplicas: 5
+        rules: [
+          {
+            name: 'http-requests'
+            http: {
+              metadata: {
+                concurrentRequests: 10
+              }
+            }
+          }
+        ]
+      }
     }
   }
 }
