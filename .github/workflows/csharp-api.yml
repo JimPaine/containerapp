@@ -57,7 +57,7 @@ jobs:
       name: test
       url: ${{ steps.get-url.outputs.fqdn }}
     runs-on: ubuntu-latest
-    needs: push-to-packages
+    needs: deploy-to-dev
     steps:
       - uses: actions/checkout@v2
       - run: |
