@@ -54,7 +54,7 @@ jobs:
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query configuration.ingress.fqdn -o tsv)"
     outputs:
       previousVersion: ${{ env.PREVIOUS_REVISION }}
-      currentVersion: 'csharp-api--0.1.${{ github.RUN_NUMBER }}'
+      currentVersion: 'csharp-api--0-1-${{ github.RUN_NUMBER }}'
   deploy-to-test:
     environment:
       name: test
