@@ -36,6 +36,7 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
     }
 
     template: {
+      revisionSuffix: replace(version, '.', '-')
       containers: [
         {
           name: 'csharp-api'
