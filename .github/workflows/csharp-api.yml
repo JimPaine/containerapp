@@ -67,13 +67,9 @@ jobs:
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
       - run: az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
+      - run: echo "CURRENT_REVISION=$(az containerapp revision list -n csharp-api -g containerapps-qrcpbr3qfrcik | jq 'sort_by(.createdTime) | .[] | .name' | tail -n 1)" >> $GITHUB_ENV
       - run: az provider register --namespace Microsoft.Web
-      - run: |
-          az deployment group create \
-          -n 'csharp-api${{ github.RUN_NUMBER }}' \
-          -g  ${{ secrets.RESOURCE_GROUP }} \
-          -f ./apps/csharp-api/main.bicep \
-          -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }} version=0.1.${{ github.RUN_NUMBER }} previous_version=${{ env.PREVIOUS_REVISION }} previous_split=50 latest_split=50
+      - run: az containerapp update -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --traffic-weight ${{ env.PREVIOUS_VERSION }}=50 ${{ env.CURRENT_REVISION }}=50
       - name: get-url
         id: get-url
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query configuration.ingress.fqdn -o tsv)"
