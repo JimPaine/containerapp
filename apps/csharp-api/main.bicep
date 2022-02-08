@@ -8,6 +8,9 @@ param image string
 param version string
 param previous_version string
 
+param previous_split int = 100
+param latest_split int = 0
+
 resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
   name: environmentName
 }
@@ -36,11 +39,11 @@ resource csharp 'Microsoft.Web/containerapps@2021-03-01' = {
         traffic: [
           {
               revisionName: previous_version
-              weight: 100
+              weight: previous_split
           }
           {
               latestRevision: true
-              weight: 0
+              weight: latest_split
           }
       ]
       }
