@@ -52,7 +52,7 @@ resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' = {
     containerAppsConfiguration: {
       controlPlaneSubnetResourceId: vnet.properties.subnets[0].id
       appSubnetResourceId: vnet.properties.subnets[1].id
-      internalOnly: true
+      internalOnly: false
     }
     appLogsConfiguration: {
       destination: 'log-analytics'
