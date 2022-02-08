@@ -42,7 +42,7 @@ resource go 'Microsoft.Web/containerapps@2021-03-01' = {
             name: 'http-requests'
             http: {
               metadata: {
-                concurrentRequests: 10
+                concurrentRequests: '10'
               }
             }
           }
