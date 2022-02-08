@@ -42,7 +42,7 @@ jobs:
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
       - run: az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
       - run: az provider register --namespace Microsoft.Web
-      - run: echo LATEST_REVISION=$(az containerapp revision list -n csharp-api -g containerapps-qrcpbr3qfrcik | jq 'sort_by(.createdTime) | .[] | .name' | tail -n 1)" >> $GITHUB_ENV
+      - run: echo "LATEST_REVISION=$(az containerapp revision list -n csharp-api -g containerapps-qrcpbr3qfrcik | jq 'sort_by(.createdTime) | .[] | .name' | tail -n 1)" >> $GITHUB_ENV
       - run: |
           az deployment group create \
           -n 'csharp-api${{ github.RUN_NUMBER }}' \
