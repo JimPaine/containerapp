@@ -51,7 +51,7 @@ jobs:
           -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }} version=0.1.${{ github.RUN_NUMBER }} previous_version=${{ env.PREVIOUS_REVISION }}
       - name: get-url
         id: get-url
-        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query configuration.ingress.fqdn -o tsv)"
+        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
     outputs:
       previousVersion: ${{ env.PREVIOUS_REVISION }}
       currentVersion: 'csharp-api--0-1-${{ github.RUN_NUMBER }}'
@@ -79,7 +79,7 @@ jobs:
           -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }} version=0.1.${{ github.RUN_NUMBER }} previous_version=${{ needs.deploy-to-dev.outputs.previousVersion }} previous_split=50 latest_split=50
       - name: get-url
         id: get-url
-        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query configuration.ingress.fqdn -o tsv)"
+        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
   deploy-to-prod:
     environment:
       name: prod
@@ -105,4 +105,4 @@ jobs:
           -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }} version=0.1.${{ github.RUN_NUMBER }} previous_version=${{ needs.deploy-to-dev.outputs.previousVersion }} previous_split=0 latest_split=100
       - name: get-url
         id: get-url
-        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query configuration.ingress.fqdn -o tsv)"
+        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
