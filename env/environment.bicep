@@ -1,7 +1,7 @@
 targetScope = 'resourceGroup'
 
 var suffix = uniqueString(resourceGroup().id)
-var location = resourceGroup().location
+param location string = resourceGroup().location
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-03-01' = {
   name: 'vnet'
