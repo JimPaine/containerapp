@@ -41,6 +41,7 @@ jobs:
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
       - run: az provider register --namespace Microsoft.App
+      - run: az config set extension.use_dynamic_install=yes_without_prompt
       - run: echo "PREVIOUS_REVISION=$(az containerapp revision list -n csharp-api -g containerapps-qrcpbr3qfrcik | jq 'sort_by(.createdTime) | .[] | .name' | tail -n 1 | sed 's|\"||g')" >> $GITHUB_ENV
       - run: |
           az deployment group create \
@@ -69,6 +70,7 @@ jobs:
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
       - run: az provider register --namespace Microsoft.App
+      - run: az config set extension.use_dynamic_install=yes_without_prompt
       - run: |
           az containerapp update \
           -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} \
@@ -92,6 +94,7 @@ jobs:
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
       - run: echo "CURRENT_REVISION=$(az containerapp revision list -n csharp-api -g containerapps-qrcpbr3qfrcik | jq 'sort_by(.createdTime) | .[] | .name' | tail -n 1 | sed 's|\"||g')" >> $GITHUB_ENV
       - run: az provider register --namespace Microsoft.App
+      - run: az config set extension.use_dynamic_install=yes_without_prompt
       - run: |
           az containerapp update \
           -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} \
