@@ -98,9 +98,11 @@ jobs:
       - run: az provider register --namespace Microsoft.App
       - run: az config set extension.use_dynamic_install=yes_without_prompt
       - run: |
-          az containerapp update \
-          -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} \
-          --traffic-weight ${{ env.CURRENT_REVISION }}=100
+          az deployment group create \
+          -n 'csharp-api${{ github.RUN_NUMBER }}' \
+          -g  ${{ secrets.RESOURCE_GROUP }} \
+          -f ./apps/csharp-api/main.bicep \
+          -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }} version=0.1.${{ github.RUN_NUMBER }} previous_version=${{ needs.deploy-to-dev.outputs.previousVersion }} previous_split=0 latest_split=100
       - name: get-url
         id: get-url
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query configuration.ingress.fqdn -o tsv)"
