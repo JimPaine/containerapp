@@ -35,6 +35,7 @@ resource csharp 'Microsoft.App/containerApps@2022-01-01-preview' = {
           value: 'https://${nextHop.properties.configuration.ingress.fqdn}/api/go'
         }
       ]
+      activeRevisionsMode: 'multiple'
       ingress: {
         external: true
         targetPort: 80
