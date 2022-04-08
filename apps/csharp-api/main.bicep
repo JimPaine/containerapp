@@ -40,7 +40,7 @@ resource csharp 'Microsoft.App/containerApps@2022-01-01-preview' = {
         targetPort: 80
         traffic: [
           {
-            revisionName: previous_version
+            revisionName: empty(previous_version) ? 'csharp-api--${revisionSuffix}' : previous_version
             weight: previous_split
           }
           {
