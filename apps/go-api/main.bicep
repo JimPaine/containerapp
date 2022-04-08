@@ -9,7 +9,7 @@ resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
   name: environmentName
 }
 
-resource go 'Microsoft.Web/containerapps@2021-03-01' = {
+resource go 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: 'go'
   location: resourceGroup().location
 
