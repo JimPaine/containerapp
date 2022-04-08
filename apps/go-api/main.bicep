@@ -29,7 +29,7 @@ resource go 'Microsoft.App/containerApps@2022-01-01-preview' = {
           name: 'go-api'
           image: image
           resources: {
-            cpu: 0.25
+            cpu: json('0.25')
             memory: '.5Gi'
           }
         }
