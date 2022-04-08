@@ -2,7 +2,7 @@ targetScope = 'resourceGroup'
 
 @description('The name of the environment that the app should be deployed to.')
 param environmentName string
-
+param location string = resourceGroup().location
 param image string
 
 resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
@@ -11,10 +11,10 @@ resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
 
 resource go 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: 'go'
-  location: resourceGroup().location
+  location: location
 
   properties: {
-    kubeEnvironmentId: environment.id
+    managedEnvironmentId: environment.id
     configuration: {
       registries: []
       ingress: {
