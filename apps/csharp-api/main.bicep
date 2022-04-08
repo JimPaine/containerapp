@@ -2,7 +2,7 @@ targetScope = 'resourceGroup'
 
 @description('The name of the environment that the app should be deployed to.')
 param environmentName string
-
+param location string = resourceGroup().location
 param image string
 
 param version string
@@ -13,20 +13,20 @@ param latest_split int = 0
 
 var revisionSuffix = replace(version, '.', '-')
 
-resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
+resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' existing = {
   name: environmentName
 }
 
-resource nextHop 'Microsoft.Web/containerapps@2021-03-01' existing = {
+resource nextHop 'Microsoft.App/containerApps@2022-01-01-preview' existing = {
   name: 'go'
 }
 
 resource csharp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: 'csharp-api'
-  location: resourceGroup().location
+  location: location
 
   properties: {
-    kubeEnvironmentId: environment.id
+    managedEnvironmentId: environment.id
     configuration: {
       registries: []
       secrets: [
@@ -60,7 +60,7 @@ resource csharp 'Microsoft.App/containerApps@2022-01-01-preview' = {
           env: [
             {
               name: 'nextHop'
-              secretref: 'nexthop'
+              secretRef: 'nexthop'
             }
             {
               name: 'version'
@@ -68,7 +68,7 @@ resource csharp 'Microsoft.App/containerApps@2022-01-01-preview' = {
             }
           ]
           resources: {
-            cpu: '.25'
+            cpu: json('.25')
             memory: '.5Gi'
           }
         }
