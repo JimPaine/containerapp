@@ -60,7 +60,7 @@ resource csharp 'Microsoft.App/containerApps@2022-01-01-preview' = {
           env: [
             {
               name: 'nextHop'
-              value: 'http://go/api/go'
+              secretRef: 'nextHop'
             }
             {
               name: 'version'
