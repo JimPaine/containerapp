@@ -40,8 +40,7 @@ jobs:
           -p ${{ secrets.AZ_CLI_PASSWORD }} \
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
-      - run: az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
-      - run: az provider register --namespace Microsoft.Web
+      - run: az provider register --namespace Microsoft.App
       - run: echo "PREVIOUS_REVISION=$(az containerapp revision list -n csharp-api -g containerapps-qrcpbr3qfrcik | jq 'sort_by(.createdTime) | .[] | .name' | tail -n 1 | sed 's|\"||g')" >> $GITHUB_ENV
       - run: |
           az deployment group create \
@@ -69,8 +68,7 @@ jobs:
           -p ${{ secrets.AZ_CLI_PASSWORD }} \
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
-      - run: az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
-      - run: az provider register --namespace Microsoft.Web
+      - run: az provider register --namespace Microsoft.App
       - run: |
           az containerapp update \
           -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} \
@@ -92,9 +90,8 @@ jobs:
           -p ${{ secrets.AZ_CLI_PASSWORD }} \
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
-      - run: az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
       - run: echo "CURRENT_REVISION=$(az containerapp revision list -n csharp-api -g containerapps-qrcpbr3qfrcik | jq 'sort_by(.createdTime) | .[] | .name' | tail -n 1 | sed 's|\"||g')" >> $GITHUB_ENV
-      - run: az provider register --namespace Microsoft.Web
+      - run: az provider register --namespace Microsoft.App
       - run: |
           az containerapp update \
           -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} \
