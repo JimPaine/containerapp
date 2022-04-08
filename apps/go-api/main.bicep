@@ -5,7 +5,7 @@ param environmentName string
 param location string = resourceGroup().location
 param image string
 
-resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' existing = {
+resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' existing = {
   name: environmentName
 }
 
