@@ -42,18 +42,17 @@ resource logs 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
   }
 }
 
-resource environment 'Microsoft.Web/kubeEnvironments@2021-03-01' = {
+resource environment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
   name: 'environment'
   location: location
 
   properties: {
-    type: 'managed'
-    internalLoadBalancerEnabled: true
-    containerAppsConfiguration: {
-      controlPlaneSubnetResourceId: vnet.properties.subnets[0].id
-      appSubnetResourceId: vnet.properties.subnets[1].id
-      internalOnly: false
+    vnetConfiguration: {
+      internal: false
+      infrastructureSubnetId: vnet.properties.subnets[0].id
+      runtimeSubnetId: vnet.properties.subnets[1].id
     }
+
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
