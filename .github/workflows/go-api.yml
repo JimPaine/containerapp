@@ -43,7 +43,7 @@ jobs:
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
       - run: az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
-      - run: az provider register --namespace Microsoft.Web
+      - run: az provider register --namespace Microsoft.App
       - run: |
           az containerapp up \
             -n 'go-api${{ github.RUN_NUMBER }}' \
