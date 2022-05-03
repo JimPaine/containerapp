@@ -6,10 +6,6 @@ param location string = resourceGroup().location
 param image string
 
 param version string
-param previous_version string
-
-param previous_split int = 100
-param latest_split int = 0
 
 var revisionSuffix = replace(version, '.', '-')
 
