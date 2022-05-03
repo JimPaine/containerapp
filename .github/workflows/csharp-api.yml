@@ -74,7 +74,7 @@ jobs:
           az containerapp ingress traffic set \
             -n 'csharp-api${{ github.RUN_NUMBER }}' \
             -g  ${{ secrets.RESOURCE_GROUP }} \
-            --traffic-split previous_split=50 latest_split=50
+            --traffic-weight previous_split=50 latest_split=50
       - name: get-url
         id: get-url
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n 'csharp-api${{ github.RUN_NUMBER }}' -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
@@ -97,7 +97,7 @@ jobs:
           az containerapp ingress traffic set \
             -n 'csharp-api${{ github.RUN_NUMBER }}' \
             -g  ${{ secrets.RESOURCE_GROUP }} \
-            --traffic-split previous_split=0 latest_split=100
+            --traffic-weight previous_split=0 latest_split=100
       - name: get-url
         id: get-url
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n 'csharp-api${{ github.RUN_NUMBER }}' -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
