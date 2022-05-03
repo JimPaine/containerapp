@@ -41,8 +41,6 @@ jobs:
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
       - run: az provider register --namespace Microsoft.App
-      - run: az config set extension.use_dynamic_install=yes_without_prompt
-      - run: echo "PREVIOUS_REVISION=$(az containerapp revision list -n 'csharp-api${{ github.RUN_NUMBER }}' -g containerapps-qrcpbr3qfrcik | jq 'sort_by(.createdTime) | .[] | .name' | tail -n 1 | sed 's|\"||g')" >> $GITHUB_ENV
       - run: |
           az deployment group create \
           -n 'csharp-api${{ github.RUN_NUMBER }}' \
@@ -52,9 +50,6 @@ jobs:
       - name: get-url
         id: get-url
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n 'csharp-api${{ github.RUN_NUMBER }}' -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
-    outputs:
-      previousVersion: ${{ env.PREVIOUS_REVISION }}
-      currentVersion: 'csharp-api--0-1-${{ github.RUN_NUMBER }}'
   deploy-to-test:
     environment:
       name: test
@@ -74,7 +69,7 @@ jobs:
           az containerapp ingress traffic set \
             -n 'csharp-api${{ github.RUN_NUMBER }}' \
             -g  ${{ secrets.RESOURCE_GROUP }} \
-            --traffic-weight previous_split=50 latest_split=50
+            --traffic-weight previous=50 current=50
       - name: get-url
         id: get-url
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n 'csharp-api${{ github.RUN_NUMBER }}' -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
@@ -97,7 +92,7 @@ jobs:
           az containerapp ingress traffic set \
             -n 'csharp-api${{ github.RUN_NUMBER }}' \
             -g  ${{ secrets.RESOURCE_GROUP }} \
-            --traffic-weight previous_split=0 latest_split=100
+            --traffic-weight previous=0 current=100
       - name: get-url
         id: get-url
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n 'csharp-api${{ github.RUN_NUMBER }}' -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
