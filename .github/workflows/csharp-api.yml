@@ -49,7 +49,7 @@ jobs:
           -p environmentName=environment image=ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }} version=0.1.${{ github.RUN_NUMBER }}
       - name: get-url
         id: get-url
-        run: echo "::set-output name=fqdn::https://$(az containerapp show -n 'csharp-api${{ github.RUN_NUMBER }}' -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
+        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
   deploy-to-test:
     environment:
       name: test
@@ -67,12 +67,12 @@ jobs:
       - run: az extension add --name containerapp --upgrade
       - run: |
           az containerapp ingress traffic set \
-            -n 'csharp-api${{ github.RUN_NUMBER }}' \
+            -n csharp-api \
             -g  ${{ secrets.RESOURCE_GROUP }} \
             --traffic-weight previous=50 current=50
       - name: get-url
         id: get-url
-        run: echo "::set-output name=fqdn::https://$(az containerapp show -n 'csharp-api${{ github.RUN_NUMBER }}' -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
+        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
   deploy-to-prod:
     environment:
       name: prod
@@ -90,9 +90,9 @@ jobs:
       - run: az extension add --name containerapp --upgrade
       - run: |
           az containerapp ingress traffic set \
-            -n 'csharp-api${{ github.RUN_NUMBER }}' \
+            -n csharp-api \
             -g  ${{ secrets.RESOURCE_GROUP }} \
             --traffic-weight previous=0 current=100
       - name: get-url
         id: get-url
-        run: echo "::set-output name=fqdn::https://$(az containerapp show -n 'csharp-api${{ github.RUN_NUMBER }}' -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
+        run: echo "::set-output name=fqdn::https://$(az containerapp show -n csharp-api -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)"
