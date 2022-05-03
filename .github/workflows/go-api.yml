@@ -42,6 +42,8 @@ jobs:
           -p ${{ secrets.AZ_CLI_PASSWORD }} \
           --tenant ${{ secrets.AZ_CLI_TENANT_ID }}
       - run: az account set -s ${{ secrets.AZ_CLI_SUBSCRIPTION }}
+      - run: az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
+      - run: az provider register --namespace Microsoft.Web
       - run: |
           az containerapp up \
             -n 'go-api${{ github.RUN_NUMBER }}' \
@@ -49,6 +51,7 @@ jobs:
             --target-port 80 \
             --ingress internal \
             --image 'ghcr.io/jimpaine/containerapp:go-api-0.1.${{ github.RUN_NUMBER }}'
+
       - name: get-url
         id: get-url
         run: echo "::set-output name=fqdn::https://$(az containerapp show -n go -g ${{ secrets.RESOURCE_GROUP }} --query configuration.ingress.fqdn -o tsv)"
