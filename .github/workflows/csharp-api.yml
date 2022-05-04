@@ -46,7 +46,7 @@ jobs:
             -n csharp-api \
             --environment environment \
             --target-port 80 \
-            --ingress internal \
+            --ingress external \
             --image 'ghcr.io/jimpaine/containerapp:csharp-api-0.1.${{ github.RUN_NUMBER }}' \
             --env-vars nextHop='https://$(az containerapp show -n go -g ${{ secrets.RESOURCE_GROUP }} --query properties.configuration.ingress.fqdn -o tsv)'
       - name: get-url
