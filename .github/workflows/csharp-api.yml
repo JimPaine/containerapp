@@ -43,7 +43,7 @@ jobs:
       - run: az extension add --name containerapp --upgrade
       - run: |
           az containerapp up \
-            -n 'go-api${{ github.RUN_NUMBER }}' \
+            -n csharp-api \
             --environment environment \
             --target-port 80 \
             --ingress internal \
